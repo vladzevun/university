@@ -42,9 +42,9 @@ namespace lab2
             this.Artists.Add(new Artist("alla"));
             this.Artists.Add(new Artist("lev"));
 
-            this.Artists[0].AtristJanra = Janra.Rock;
-            this.Artists[1].AtristJanra = Janra.RussRock;
-            this.Artists[2].AtristJanra = Janra.Classic;
+            this.Artists[0].AtristGenre = Genre.Rock;
+            this.Artists[1].AtristGenre = Genre.RussRock;
+            this.Artists[2].AtristGenre = Genre.Classic;
             
             this.Catalogs[0].Alboms.Add(new Albom("sum"));
             this.Catalogs[0].Alboms.Add(new Albom("win"));
@@ -103,7 +103,7 @@ namespace lab2
             }
             foreach (var artist in this.Artists)
             {
-                Console.Write($"{artist.Name}({artist.AtristJanra}), ");
+                Console.Write($"{artist.Name}({artist.AtristGenre}), ");
             }
             Console.Write("\n\nCollection list:\n");
             if (this.Collections.Count == 0)
@@ -140,12 +140,12 @@ namespace lab2
             {
                 foreach (var item in catalog.Alboms)
                 {
-                    Console.Write($"\t{item.Name} by {item.Autrhor.Name} janra {item.Autrhor.AtristJanra}. Songs:\n");
+                    Console.Write($"\t{item.Name} by {item.Autrhor.Name} genre {item.Autrhor.AtristGenre}. Songs:\n");
                     if (item.songs.Count > 0)
                     {
                         foreach (var song in item.songs)
                         {
-                            Console.Write($"\t\t{song.Name} year({song.Year}) janra {item.Autrhor.AtristJanra}\n");
+                            Console.Write($"\t\t{song.Name} year({song.Year}) genre {item.Autrhor.AtristGenre}\n");
                         }
                     }
                 }
@@ -225,7 +225,7 @@ namespace lab2
         private void Search()
         {
             Console.WriteLine("" +
-                "1. Search for song Janra\n" +
+                "1. Search for song Genre\n" +
                 "2. Search for Artist\n" +
                 "3. Search for Albom\n" +
                 "4. Search for Collection\n" +
@@ -235,7 +235,7 @@ namespace lab2
             switch (command)
             {
                 case '1':
-                    searchJanra();
+                    searchGenre();
                     break;
                 case '2':
                     searchArtist();
@@ -285,7 +285,7 @@ namespace lab2
                     }
                     foreach (var song in collection.songs)
                     {
-                        Console.WriteLine($"\t\t{song.Name} by {song.LinkToArtist.Name} year({song.Year}) janra({song.LinkToArtist.AtristJanra})");
+                        Console.WriteLine($"\t\t{song.Name} by {song.LinkToArtist.Name} year({song.Year}) genre({song.LinkToArtist.AtristGenre})");
                     }
                     break;
                 case '5':
@@ -298,7 +298,7 @@ namespace lab2
                             foreach (var song in albm.songs)     
                             {
                                 if (song.Year == year)
-                                    Console.WriteLine($"\t\t{song.Name} by {song.LinkToArtist.Name} year({song.Year}) janra({song.LinkToArtist.AtristJanra})");
+                                    Console.WriteLine($"\t\t{song.Name} by {song.LinkToArtist.Name} year({song.Year}) genre({song.LinkToArtist.AtristGenre})");
                             }
                         }
                     }
@@ -345,34 +345,34 @@ namespace lab2
             }
         }
 
-        private void searchJanra()
+        private void searchGenre()
         {
-            Console.Write("Choose janra: ");
+            Console.Write("Choose genre: ");
 
-            Janra janra = Janra.Other;
-            this.printJanras();
+            Genre genre = Genre.Other;
+            this.printGenres();
             switch (Console.ReadKey().KeyChar)
             {
                 case '1':
-                    janra = Janra.Pop;
+                    genre = Genre.Pop;
                     break;
                 case '2':
-                    janra = Janra.Rock;
+                    genre = Genre.Rock;
                     break;
                 case '3':
-                    janra = Janra.AltRock;
+                    genre = Genre.AltRock;
                     break;
                 case '4':
-                    janra = Janra.RussRock;
+                    genre = Genre.RussRock;
                     break;
                 case '5':
-                    janra = Janra.Classic;
+                    genre = Genre.Classic;
                     break;
                 case '6':
-                    janra = Janra.DubStep;
+                    genre = Genre.DubStep;
                     break;
                 case '7':
-                    janra = Janra.Other;
+                    genre = Genre.Other;
                     break;
                 default:
                     break;
@@ -382,10 +382,10 @@ namespace lab2
             {
                 foreach (var albom in catalog.Alboms)
                 {
-                    if (albom.Autrhor.AtristJanra == janra || Song.isSubJanra(janra,albom.Autrhor.AtristJanra))
+                    if (albom.Autrhor.AtristGenre == genre || Song.isSubGenre(genre,albom.Autrhor.AtristGenre))
                         foreach (var song in albom.songs)
                         {
-                            Console.WriteLine($"{song.Name} by {song.LinkToArtist.Name} year({song.Year}) from albom({albom.Name}) janra({albom.Autrhor.AtristJanra})");
+                            Console.WriteLine($"{song.Name} by {song.LinkToArtist.Name} year({song.Year}) from albom({albom.Name}) genre({albom.Autrhor.AtristGenre})");
                         }
                 }
             }
@@ -550,33 +550,33 @@ namespace lab2
             var newArtist = new Artist(artistName);
             this.Artists.Add(newArtist);
 
-            Console.Write("Choose Artist janra: ");
-            this.printJanras();
+            Console.Write("Choose Artist genre: ");
+            this.printGenres();
             switch (Console.ReadKey().KeyChar)
             {
                 case '1':
-                    newArtist.AtristJanra = Janra.Pop;
+                    newArtist.AtristGenre = Genre.Pop;
                     break;
                 case '2':
-                    newArtist.AtristJanra = Janra.Rock;
+                    newArtist.AtristGenre = Genre.Rock;
                     break;
                 case '3':
-                    newArtist.AtristJanra = Janra.AltRock;
+                    newArtist.AtristGenre = Genre.AltRock;
                     break;
                 case '4':
-                    newArtist.AtristJanra = Janra.RussRock;
+                    newArtist.AtristGenre = Genre.RussRock;
                     break;
                 case '5':
-                    newArtist.AtristJanra = Janra.Classic;
+                    newArtist.AtristGenre = Genre.Classic;
                     break;
                 case '6':
-                    newArtist.AtristJanra = Janra.DubStep;
+                    newArtist.AtristGenre = Genre.DubStep;
                     break;
                 case '7':
-                    newArtist.AtristJanra = Janra.Other;
+                    newArtist.AtristGenre = Genre.Other;
                     break;
                 default:
-                    newArtist.AtristJanra = Janra.Other;
+                    newArtist.AtristGenre = Genre.Other;
                     break;
             }
         }
@@ -627,7 +627,7 @@ namespace lab2
             this.Catalogs.Add(new Catalog(catalogName));
         }
 
-        private void printJanras()
+        private void printGenres()
         {
             Console.WriteLine("\n" +
                 "\t1. Pop \n" +

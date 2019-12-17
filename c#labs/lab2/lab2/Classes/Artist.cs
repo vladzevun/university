@@ -15,7 +15,7 @@ namespace lab2.Classes
         public List<Albom> alboms{ get; set; }
         public string Name { get; set; }
 
-        public Janra AtristJanra { get; set; }
+        public Genre AtristGenre { get; set; }
 
     }
 }

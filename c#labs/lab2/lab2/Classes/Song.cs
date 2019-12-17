@@ -4,7 +4,7 @@ using System.Text;
 
 namespace lab2.Classes
 {
-    enum Janra
+    enum Genre
     {
         Pop, Rock, AltRock, RussRock, Classic, DubStep, Other
     }
@@ -22,11 +22,11 @@ namespace lab2.Classes
 
         public Artist LinkToArtist { get; set; }
 
-        //Very bad realization of janras and subjanran, but I hope it is enough...
-        public static bool isSubJanra(Janra parent, Janra son)
+        //Very bad realization of genres and subgenren, but I hope it is enough...
+        public static bool isSubGenre(Genre parent, Genre son)
         {
-            if (parent == Janra.Rock)
-                if (son == Janra.AltRock || son == Janra.RussRock)
+            if (parent == Genre.Rock)
+                if (son == Genre.AltRock || son == Genre.RussRock)
                     return true;
             return false;
         }

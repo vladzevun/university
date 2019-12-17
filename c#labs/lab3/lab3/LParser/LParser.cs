@@ -127,9 +127,12 @@ namespace lab3.LParser
                     if ((int)sb[sb.Length-1] != 93)
                         throw new Exceptions.InvalidFileFormatException("Wrong format. Section name is not closed by ] bracket.");
 
+
                     //remove ] bracket
                     sb.Remove(sb.Length - 1, 1);
 
+                    if (!isCorrectSectionName(sb.ToString()))
+                        throw new Exceptions.InvalidFileFormatException($"Wrong format. Section name {sb.ToString()} has wrong format.");
                     this.sectionCounter++;
 
                     this.db.Add(new Tuple<Dictionary<string, string>, string>(new Dictionary<string, string>(), sb.ToString()));
@@ -152,7 +155,7 @@ namespace lab3.LParser
                         throw new Exceptions.InvalidFileFormatException($"Wrong format. After Name member must be space(32) char, but not '{(char)c}'");
                     c = sr.Read(); //"="
                     if (!((int)c == 61))
-                        throw new Exceptions.InvalidFileFormatException($"Wrong format. After Name member and space(32) char must be '=' char, but not '{(char)c}'");
+                        throw new Exceptions.InvalidFileFormatException($"Wrong format. After Name member and space char must be '=' char, but not '{(char)c}'");
                     c = sr.Read(); //" "
                     if (!((int)c == 32))
                         throw new Exceptions.InvalidFileFormatException($"Wrong format. After '=' char must be space(32) char, but not '{(char)c}'");
@@ -162,7 +165,14 @@ namespace lab3.LParser
                     string rightPart = LParser.ReadValueMember(ref sr, c);
 
                     //Adding pair <key=NAME, value=VALUE> to dictionary db
-                    this.db[sectionCounter].Item1.Add(leftPart, rightPart);
+                    try
+                    {
+                        this.db[sectionCounter].Item1.Add(leftPart, rightPart);
+                    }
+                    catch(ArgumentException e)
+                    {
+                        throw new Exceptions.InvalidFileFormatException($"Invalid file format. Duplicated Keys in section {this.db[sectionCounter].Item2}.");
+                    }
                 }
             }
         }
@@ -244,6 +254,18 @@ namespace lab3.LParser
             {
                 c = (int)word[i];
                 if ((c > 64 && c < 91) || (c > 96 && c < 123) || (c > 47 && c < 58) || (c == 95))
+                    continue;
+                return false;
+            }
+            return true;
+        }
+        public static bool isCorrectSectionName(string word)
+        {
+            int c = 0;
+            for (int i = 0; i < word.Length; i++)
+            {
+                c = (int)word[i];
+                if ((c > 64 && c < 91) || (c > 96 && c < 123) || (c == 95))
                     continue;
                 return false;
             }
