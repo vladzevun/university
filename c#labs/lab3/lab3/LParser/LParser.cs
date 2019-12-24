@@ -131,11 +131,34 @@ namespace lab3.LParser
                     //remove ] bracket
                     sb.Remove(sb.Length - 1, 1);
 
-                    if (!isCorrectSectionName(sb.ToString()))
-                        throw new Exceptions.InvalidFileFormatException($"Wrong format. Section name {sb.ToString()} has wrong format.");
-                    this.sectionCounter++;
+                    var sectionName = sb.ToString();
 
-                    this.db.Add(new Tuple<Dictionary<string, string>, string>(new Dictionary<string, string>(), sb.ToString()));
+                    if (!isCorrectSectionName(sectionName))
+                        throw new Exceptions.InvalidFileFormatException($"Wrong format. Section name {sb.ToString()} has wrong format.");
+
+
+                    //check if this section already exists
+                    Dictionary<string, string> dict = null;
+                    foreach (var item in this.db)
+                    {
+                        if (item.Item2 == sectionName)
+                        {
+                            dict = item.Item1;
+                            break;
+                        }
+                    }
+                    if (dict == null)
+                    {
+                        this.sectionCounter++;
+                        this.db.Add(new Tuple<Dictionary<string, string>, string>(new Dictionary<string, string>(), sectionName));
+                    }
+                    else
+                    {
+                        throw new Exceptions.InvalidFileFormatException($"Wrong file format. Two sections with name {sectionName}");
+                    }
+
+
+                    
 
                     //clear sb for next SECTION name
                     sb.Clear();

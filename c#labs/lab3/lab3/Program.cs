@@ -19,7 +19,7 @@ namespace lab3
                 input = File.ReadAllText("LostValues.ini");
             }
             catch(FileNotFoundException e)
-            {
+            {   
                 Console.WriteLine($"An exception occurred, message: {e.Message}");
                 return;
             }           
